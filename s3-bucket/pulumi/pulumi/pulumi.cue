@@ -1,16 +1,21 @@
 package pulumi
 
-
 #Resource: {
 	type:         string
 	resourceName: string
 	properties: {[string]: _}
+	create: _
 	...
 }
 
 #Up: {
-	resources: [Name=string]: #Resource & {
+	cue: [Name=string]: #Resource & {
 		resourceName: Name
+	}
+	resources: {
+		for k, v in cue {
+			"\(k)": v.create
+		}
 	}
 	outputs: [string]: string
 }
@@ -19,7 +24,7 @@ package pulumi
 	"Fn::StringAsset": string
 }
 
-#FileAsset:  {
+#FileAsset: {
 	"Fn::FileAsset": string
 }
 

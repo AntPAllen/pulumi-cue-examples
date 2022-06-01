@@ -2,13 +2,20 @@ package s3
 
 import "examples.pulumi.com/s3-bucket/pulumi/pulumi"
 
-#BucketObject: {
-	pulumi.#Resource
+#BucketObject: self={
 	type: "aws:s3:BucketObject"
+	pulumi.#Resource
 	properties: {
 		source: pulumi.#Asset
 		acl:    string
-		bucket: string
+		bucket: string | #Bucket
+		bucketKeyEnabled?: bool
+	}
+	bucketKeyEnabled: "${\(self.resourceName)}.bucketKeyEnabled"
+	create: {
+		type:         self.type
+		resourceName: self.resourceName
+		properties:   self.properties
 	}
 }
 #Bucket: self={
@@ -18,13 +25,13 @@ import "examples.pulumi.com/s3-bucket/pulumi/pulumi"
 		website: {
 			indexDocument: string
 		}
-	}
-	ref: {
-		id:              "${\(self.resourceName).id}"
-		websiteEndpoint: "${\(self.resourceName).websiteEndpoint}"
-		website: {
-			indexDocument: "${\(self.resourceName).website.indexDocument}"
-		}
 
+	}
+	id:              "${\(self.resourceName)}.id"
+	websiteEndpoint: "${\(self.resourceName)}.websiteEndpoint"
+	create: {
+		type:         self.type
+		resourceName: self.resourceName
+		properties: self.properties
 	}
 }
