@@ -6,9 +6,9 @@ import "examples.pulumi.com/s3-bucket/pulumi/pulumi"
 	type: "aws:s3:BucketObject"
 	pulumi.#Resource
 	properties: {
-		source: pulumi.#Asset
-		acl:    string
-		bucket: string | #Bucket
+		source:            pulumi.#Asset
+		acl:               string
+		bucket:            string | #Bucket
 		bucketKeyEnabled?: bool
 	}
 	bucketKeyEnabled: "${\(self.resourceName)}.bucketKeyEnabled"
@@ -32,6 +32,6 @@ import "examples.pulumi.com/s3-bucket/pulumi/pulumi"
 	create: {
 		type:         self.type
 		resourceName: self.resourceName
-		properties: self.properties
+		properties:   self.properties
 	}
 }
